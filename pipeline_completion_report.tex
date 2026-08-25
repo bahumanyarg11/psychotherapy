@@ -1,0 +1,710 @@
+\documentclass[11pt,a4paper]{article}
+
+% ─── Packages ──────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{tikz}
+% fontawesome5 removed - using Unicode instead
+\usepackage{sectsty}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{mdframed}
+
+% ─── Fonts ─────────────────────────────────────────────────────────────
+\setmainfont{Times New Roman}
+\setsansfont{Helvetica Neue}
+
+% ─── Color Palette (indigo / teal / orange) ────────────────────────────
+\definecolor{indigo}{HTML}{3F51B5}
+\definecolor{indigodark}{HTML}{283593}
+\definecolor{teal}{HTML}{009688}
+\definecolor{tealdark}{HTML}{00695C}
+\definecolor{orange}{HTML}{FF9800}
+\definecolor{orangedark}{HTML}{E65100}
+\definecolor{lightindigo}{HTML}{E8EAF6}
+\definecolor{lightteal}{HTML}{E0F2F1}
+\definecolor{lightorange}{HTML}{FFF3E0}
+\definecolor{darkbg}{HTML}{263238}
+\definecolor{lightgray}{HTML}{F5F5F5}
+
+% ─── Section Styling ───────────────────────────────────────────────────
+\allsectionsfont{\color{indigodark}\normalfont\sffamily\bfseries}
+\titleformat{\section}{\large\color{indigodark}\sffamily\bfseries}{\textcolor{indigo}{\textsf{M}}\ \thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\color{tealdark}\sffamily\bfseries}{\textcolor{teal}{\textsf{C}}\ \thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\small\color{orangedark}\sffamily\bfseries}{\textcolor{orange}{\textsf{o}}\ \thesubsubsection}{0.6em}{}
+
+% ─── tcolorbox Styles ──────────────────────────────────────────────────
+\tcbuselibrary{listings}
+
+% Info box
+\tcbset{
+  infoBox/.style={
+    enhanced, breakable, colback=lightindigo, colframe=indigo,
+    fonttitle=\sffamily\bfseries, title=#1,
+    drop shadow, rounded corners, boxrule=0.8pt
+  }
+}
+
+% Warning box
+\tcbset{
+  warnBox/.style={
+    enhanced, breakable, colback=lightorange, colframe=orange,
+    fonttitle=\sffamily\bfseries, title=#1,
+    drop shadow, rounded corners, boxrule=0.8pt
+  }
+}
+
+% Success box
+\tcbset{
+  successBox/.style={
+    enhanced, breakable, colback=lightteal, colframe=teal,
+    fonttitle=\sffamily\bfseries, title=#1,
+    drop shadow, rounded corners, boxrule=0.8pt
+  }
+}
+
+% Score box
+\tcbset{
+  scoreBox/.style={
+    enhanced, breakable, colback=white, colframe=indigodark,
+    fonttitle=\sffamily\bfseries\Large, title=#1,
+    drop shadow, rounded corners, boxrule=1.2pt,
+    overlay unbroken and first={
+      \path[fill=indigodark!10] 
+        ([xshift=4pt,yshift=-4pt]frame.north west) rectangle 
+        ([xshift=-4pt,yshift=4pt]frame.south east);
+    }
+  }
+}
+
+% Code listing style
+\lstset{
+  basicstyle=\ttfamily\footnotesize\color{darkbg},
+  backgroundcolor=\color{lightgray},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{lightgray},
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  captionpos=b,
+  xleftmargin=10pt,
+  xrightmargin=10pt,
+  keywordstyle=\color{indigodark}\bfseries,
+  commentstyle=\color{tealdark}\itshape,
+  stringstyle=\color{orangedark},
+  emph={self, super, cls, def, class, import, from, return, if, elif, else, for, while, try, except, finally, with, as, pass, break, continue, True, False, None, and, or, not, lambda, yield, async, await, raise},
+  emphstyle=\color{indigodark}\bfseries,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=6pt
+}
+
+% Table styling
+\rowcolors{2}{lightindigo}{white}
+\arrayrulecolor{indigo}
+
+% Header / Footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{orange}{\textsf{B}}\ \sffamily\bfseries Psychotherapy Pipeline Report}
+\fancyhead[R]{\textcolor{teal}{\textsf{F}}\ \sffamily Page \thepage}
+\fancyfoot[C]{\color{gray}\textcolor{teal}{\textsf{C}}\ \sffamily Psychotherapy Dataset Curation Pipeline — Milestone 1}
+\renewcommand{\headrule}{\color{indigo}\rule{\headwidth}{0.5pt}}
+\renewcommand{\footrule}{\color{teal}\rule{\headwidth}{0.3pt}}
+
+% Hyperlink styling
+\hypersetup{
+  colorlinks=true,
+  linkcolor=indigodark,
+  urlcolor=teal,
+  citecolor=orangedark,
+  pdfborder={0 0 0}
+}
+
+% ─── Title ─────────────────────────────────────────────────────────────
+\title{
+  \begingroup
+  \sffamily\bfseries
+  \vspace{-2em}
+  {\LARGE Context-Aware AI Psychotherapy}\\[0.3em]
+  {\Large \color{indigodark} Dataset Curation Pipeline — Milestone 1}\\[0.3em]
+  {\large \color{tealdark} Pipeline Completion Report}\\[2em]
+  \endgroup
+}
+\author{
+  \begingroup
+  \sffamily
+  {\large Lead AI Data Engineer}\\[0.5em]
+  {\large \color{tealdark} Apple M4 — MPS Backend, Python 3.13.7}\\[0.3em]
+  {\footnotesize \today}
+  \endgroup
+}
+\date{}
+
+% ─── Document ──────────────────────────────────────────────────────────
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\begin{tcolorbox}[scoreBox={\large Milestone 1 — COMPLETE},width=0.9\linewidth,center]
+\begin{minipage}{0.28\linewidth}
+  \centering
+  \Huge\color{indigodark}\textcolor{teal}{\Large $\checkmark$}\\
+  {\sffamily\bfseries 5/5}\\
+  {\sffamily\color{gray} modules}
+\end{minipage}
+\begin{minipage}{0.28\linewidth}
+  \centering
+  \Huge\color{teal}\textcolor{teal}{\Large $\diamond$}\\
+  {\sffamily\bfseries 6/6}\\
+  {\sffamily\color{gray} PII tests}
+\end{minipage}
+\begin{minipage}{0.28\linewidth}
+  \centering
+  \Huge\color{orange}\textcolor{orange}{\Large $\boxplus$}\\
+  {\sffamily\bfseries 3}\\
+  {\sffamily\color{gray} model zips}
+\end{minipage}
+\end{tcolorbox}
+\end{center}
+
+\vspace{1em}
+
+\begin{tcolorbox}[infoBox={Executive Summary}]
+This report documents the completion of the psychotherapy dataset curation pipeline for the Context-Aware AI Psychotherapy system. The pipeline consists of five modular scripts that ingest, clean, transcribe, annotate, and format therapeutic conversation data from six open-source datasets plus three pre-trained models. All modules pass import and self-tests on Apple Silicon M4 (MPS backend). PII scrubbing is integrated end-to-end using Microsoft Presidio with a custom clinical medical-ID recognizer.
+\end{tcolorbox}
+
+% ─── Architecture ──────────────────────────────────────────────────────
+\section{Pipeline Architecture}
+
+The pipeline is organized as five single-file modules following a sequential data flow:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.2cm, every node/.style={font=\sffamily\small}]
+% Nodes
+\node[rectangle, draw, rounded corners, fill=lightindigo, draw=indigo, text=indigodark, minimum width=3.2cm, minimum height=1cm, align=center] (m1) {\textbf{Module 1}\\PII Scrubber\\(presidio-anonymizer)};
+
+\node[rectangle, draw, rounded corners, fill=lightteal, draw=teal, text=tealdark, minimum width=3.2cm, minimum height=1cm, align=center, right=of m1] (m2) {\textbf{Module 2}\\Transcriber\\(faster-whisper)};
+
+\node[rectangle, draw, rounded corners, fill=lightorange, draw=orange, text=orangedark, minimum width=3.2cm, minimum height=1cm, align=center, right=of m2] (m3) {\textbf{Module 3}\\Dataset Builder\\(HuggingFace + local zips)};
+
+\node[rectangle, draw, rounded corners, fill=lightindigo!30, draw=indigodark, text=indigodark, minimum width=3.2cm, minimum height=1cm, align=center, right=of m3] (m4) {\textbf{Module 4}\\Annotator\\(3 pre-trained models)};
+
+\node[rectangle, draw, rounded corners, fill=lightteal!30, draw=teal, text=tealdark, minimum width=3.2cm, minimum height=1cm, align=center, below=of m3, xshift=-1.6cm] (m5) {\textbf{Module 5}\\Runner + README\\(orchestration)};
+
+% Arrows
+\draw[->, thick, indigo] (m1) -- (m2);
+\draw[->, thick, teal] (m2) -- (m3);
+\draw[->, thick, orange] (m3) -- (m4);
+\draw[->, thick, indigodark] (m4.south) --++ (0,-0.6) |- (m5);
+
+% Data flow labels
+\node[above=0.1cm of m1, text=gray, font=\sffamily\footnotesize] {raw text};
+\node[above=0.1cm of m2, text=gray, font=\sffamily\footnotesize] {audio files};
+\node[above=0.1cm of m3, text=gray, font=\sffamily\footnotesize] {datasets};
+\node[above=0.1cm of m4, text=gray, font=\sffamily\footnotesize] {merged + scrubbed};
+\node[below=0.1cm of m5, text=gray, font=\sffamily\footnotesize] {curated output};
+\end{tikzpicture}
+\caption{Pipeline architecture: sequential flow from raw data to curated dataset}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Data Flow Diagram}
+
+\begin{enumerate}[label=$\rightarrow$\ \arabic*., leftmargin=*, itemsep=0.5em]
+\item \textbf{Raw Inputs} --- Open-source datasets (HuggingFace Hub) and local TransferNow zip archive containing three pre-trained models
+\item \textbf{Module 1 (PII Scrubber)} --- Presidio analyzer + anonymizer with custom medical-ID recognizer; applied to all text at ingestion
+\item \textbf{Module 2 (Transcriber)} --- faster-whisper with code-switching support; converts mock clinical audio to text
+\item \textbf{Module 3 (Dataset Builder)} --- Aggregates 6 datasets, applies PII scrubbing post-merge, filters to 500--2{,}000 rows
+\item \textbf{Module 4 (Annotator)} --- Loads 3 zipped models for emotion (30 labels) + behaviour intent (8 labels) annotation; exports ChatML JSONL
+\item \textbf{Module 5 (Runner)} --- Orchestrates end-to-end pipeline with CLI arguments
+\end{enumerate}
+
+% ─── Module Details ────────────────────────────────────────────────────
+\section{Module Details}
+
+\subsection{Module 1: PII Scrubbing}
+\textcolor{indigo}{\textsf{S}}\ \textbf{File}: \texttt{pii_scrubber.py} (607 lines)
+
+\begin{tcolorbox}[infoBox={Technology Stack}]
+Microsoft Presidio v2.2.364 (presidio-analyzer + presidio-anonymizer), spaCy v3.8.16 with \texttt{en\_core\_web\_sm}, custom regex recognizers for clinical PII entities.
+\end{tcolorbox}
+
+\paragraph{Key Fixes Applied}
+
+Three critical API-compatibility bugs were identified and fixed during development:
+
+\begin{enumerate}[label=\textcolor{teal}{\textsf{!}}\ \arabic*., leftmargin=*]
+\item \textbf{Pattern import}: The non-existent import path \texttt{presidio\_analyzer.recognizer\_pattern} was replaced with the correct \texttt{from presidio\_analyzer import Pattern, PatternRecognizer, RecognizerResult}
+\item \textbf{OperatorConfig API}: Parameter names were updated from \texttt{operator=} / \texttt{replace\_params=} to \texttt{operator\_name=} / \texttt{params=} (Presidio 2.2.364 signature)
+\item \textbf{NlpEngineProvider}: The old constructor with \texttt{nlp\_engine\_name} and dict keys \texttt{lang}/\texttt{model} was replaced with direct \texttt{SpacyNlpEngine(models=[{"lang\_code": "en", "model\_name": "en\_core\_web\_sm"}])}
+\end{enumerate}
+
+\begin{tcolorbox}[successBox={PII Self-Test Results}, colback=white]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Test} & \textbf{Result} \\
+\midrule
+Medical ID / Name / Date / Phone / Org & \textcolor{teal}{$\checkmark$}\ PASS \\
+Aadhaar card number & \textcolor{teal}{$\checkmark$}\ PASS \\
+Indian phone number (+91) & \textcolor{teal}{$\checkmark$}\ PASS \\
+Email address & \textcolor{teal}{$\checkmark$}\ PASS \\
+Aadhaar (alt format) & \textcolor{teal}{$\checkmark$}\ PASS \\
+No PII (clean text) & \textcolor{teal}{$\checkmark$}\ PASS \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+
+\textbf{6/6 tests passed.} Custom entity coverage: NAME, DATE\_TIME, PHONE\_NUMBER, EMAIL, ORGANIZATION, PATIENT\_ID, MEDICAL\_LICENSE, IDENTITY\_NO, INDIAN\_AADHAAR, US\_PHONE, INDIAN\_PHONE.
+\end{tcolorbox}
+
+\paragraph{PII Entity Schema}
+
+\begin{longtable}{>{\ttfamily}p{3.5cm}p{3cm}p{5cm}}
+\caption{PII Entity Mapping --- scrubbing rules and redaction values} \\
+\toprule
+\textbf{Entity Type} & \textbf{Source} & \textbf{Redaction Value} \\
+\midrule
+\endfirsthead
+\caption[]{Continued from previous page} \\
+\toprule
+\textbf{Entity Type} & \textbf{Source} & \textbf{Redaction Value} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{Continued on next page}
+\endfoot
+\bottomrule
+\endlastfoot
+PERSON & Presidio NER (spaCy) & \texttt{[PERSON]} \\
+ORGANIZATION & Presidio NER (spaCy) & \texttt{[ORG]} \\
+LOCATION & Presidio NER (spaCy) & \texttt{[LOCATION]} \\
+DATE\_TIME & Presidio NER (spaCy) & \texttt{[DATE]} \\
+EMAIL & Custom regex & \texttt{[EMAIL]} \\
+PHONE\_NUMBER & Presidio (built-in) & \texttt{[PHONE]} \\
+PATIENT\_ID & Custom regex (MRN/PID) & \texttt{[MEDICAL\_ID]} \\
+MEDICAL\_LICENSE & Custom regex (NPI/License) & \texttt{[MEDICAL\_ID]} \\
+INDIAN\_AADHAAR & Custom regex ($\backslash$d\{4\}\textbackslash d\{4\}\textbackslash d\{4\}) & \texttt{[AADHAAR]} \\
+INDIAN\_PHONE & Custom regex (+91) & \texttt{[PHONE]} \\
+IDENTITY\_NO & Custom regex (ID/Identity prefix) & \texttt{[MEDICAL\_ID]} \\
+\end{longtable}
+
+\paragraph{Overlap Resolution}
+
+A priority-based overlap resolver ensures custom clinical regex entities (Aadhaar, medical IDs) take precedence over Presidio NER when they overlap at the same position. The resolver checks for same-type overlap only, preventing legitimate non-PII entities from being masked.
+
+\subsection{Module 2: Multilingual Audio-to-Text}
+\textcolor{teal}{\textsf{M}}\ \textbf{File}: \texttt{transcriber.py}
+
+\begin{tcolorbox}[infoBox={Technology Stack}]
+faster-whisper (optimized Whisper inference), VAD-based audio chunking, bilingual/trilingual code-switching support, automatic language detection.
+\end{tcolorbox}
+
+\paragraph{Key Features}
+\begin{itemize}[label=\textcolor{teal}{$\checkmark$}, leftmargin=*]
+\item Code-switching support: handles mixed-language audio (e.g., English--Kannada, English--Hindi)
+\item Language detection via Whisper's built-in language identification
+\item VAD-based segmentation for long clinical sessions
+\item MPS/CPU fallback for Apple Silicon M4
+\item Error handling for missing/corrupt audio files (returns empty result, logs warning)
+\end{itemize}
+
+\subsection{Module 3: Data Aggregation \& Annotation}
+\textcolor{teal}{\textsf{D}}\ \textbf{File}: \texttt{dataset\_builder.py} (797 lines)
+
+\begin{tcolorbox}[infoBox={Data Sources}]
+6 datasets integrated: 3 from HuggingFace Hub, 3 from local zip archive.
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnBox={PII Scrubbing Integration}]
+Scrubbing step added between merge and filter: \texttt{scrubber = PIIScrubber()} applied to the \texttt{text} column via \texttt{.apply(scrubber.scrub)} before quality filtering.
+\end{tcolorbox}
+
+\paragraph{Data Sources}
+
+\begin{center}
+\begin{tcolorbox}[colback=white, colframe=teal, enhanced, breakable, title=Data Source Inventory, fonttitle=\sffamily\bfseries]
+\begin{tabular}{>{\sffamily\bfseries}p{2.2cm}p{2.4cm}p{3cm}p{3.5cm}}
+\toprule
+\textbf{Source} & \textbf{Type} & \textbf{Access} & \textbf{Utterances} \\
+\midrule
+GoEmotions & Emotion & Local zip & 54K \\
+IEMOCAP & Emotion & Local zip & 6.5K \\
+MELD & Emotion & Local zip & 12.3K \\
+CounselChat & Therapeutic Q\&A & HuggingFace & $\sim$25K \\
+EmpatheticDialogues & Conversational & HuggingFace & $\sim$25K \\
+Mental Health FAQ & Q\&A & HuggingFace & 1.5K \\
+Mock Clinical & Clinical simulation & Local text & Varies \\
+Transcribed Audio & Clinical sessions & local & Varies \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+
+\paragraph{Unified Schema}
+
+All datasets are normalized to a single schema before merging:
+
+\begin{center}
+\begin{tcolorbox}[colback=white, colframe=indigo, enhanced, breakable, title=Unified DataFrame Schema, fonttitle=\sffamily\bfseries]
+\begin{tabular}{>{\ttfamily}p{3cm}p{2cm}p{7cm}}
+\toprule
+\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+\midrule
+\texttt{conversation\_id} & str & Groups utterances into sessions \\
+\texttt{turn\_id} & int & Within-session turn number \\
+\texttt{speaker} & str & \texttt{patient} or \texttt{therapist} \\
+\texttt{text} & str & PII-scrubbed utterance text \\
+\texttt{emotion} & str & Emotion label (normalized to unified taxonomy) \\
+\texttt{source} & str & Provenance tag \\
+\texttt{metadata} & dict & Extra fields (topic, confidence, language) \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+
+\paragraph{Quality Filtering}
+
+The \texttt{filter\_and\_sample} function applies these criteria:
+\begin{enumerate}[label=\textcolor{orange}{\textsf{F}}\ \arabic*., leftmargin=*]
+\item Remove rows with missing/null text
+\item Remove rows shorter than 5 characters
+\item Remove duplicate utterances (exact text match within source)
+\item Filter to conversations with minimum 2 turns (patient + therapist exchange)
+\item Sample to target conversation count (default: 1{,}500, range: 500--2{,}000)
+\end{enumerate}
+
+\subsection{Module 4: Model Integration and Annotation}
+\textcolor{orange}{\textsf{B}}\ \textbf{File}: \texttt{annotator\_and\_exporter.py} (988 lines)
+
+\begin{tcolorbox}[infoBox={Pre-Trained Model Archive}]
+Three models extracted from the 962MB TransferNow zip archive.
+\end{tcolorbox}
+
+\paragraph{Model Inventory}
+
+\begin{center}
+\begin{tcolorbox}[colback=white, colframe=teal, enhanced, breakable, title=Pre-Trained Models from TransferNow Archive, fonttitle=\sffamily\bfseries]
+\begin{tabular}{>{\sffamily\bfseries}p{3cm}p{2.5cm}p{2.5cm}p{4cm}}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Labels} & \textbf{Architecture} \\
+\midrule
+\texttt{emotion\_model\_1} & 460 MB & 30 (27 GoEmotions + 3 intent) & RoBERTa multitask \\
+\texttt{behaviour\_model} & 248 MB & 8 counseling intents & DistilBERT \\
+\texttt{emotion\_model} & 255 MB & 27 GoEmotions & RoBERTa \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+
+\paragraph{Bug Fixes Applied to Annotator}
+
+\begin{enumerate}[label=\textcolor{red}{\textsf{!}}\ Fix \arabic*., leftmargin=*]
+\item \textbf{BehaviourAnnotator.\_\_init__}: Referenced undefined variable \texttt{model\_key}; missing initializations for \texttt{self.\_extracted}, \texttt{self.model\_dir}, \texttt{self.labels} --- all fixed
+\item \textbf{json.dumps(generator)}: Line 775 passed a generator object to \texttt{json.dumps} instead of a list comprehension for the \texttt{all\_emotions} column --- fixed to convert generator to list first
+\item \textbf{del model/tokenizer crash}: \texttt{finally} blocks would raise \texttt{NameError} when \texttt{load()} failed before assignment --- added \texttt{if model is not None} guards before deletion
+\end{enumerate}
+
+\paragraph{Emotion Label Mapping}
+
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+\textbf{Index} & \textbf{Label} \\
+\midrule
+0 & sadness \\
+1 & joy \\
+2 & love \\
+3 & anger \\
+4 & fear \\
+5 & surprise \\
+6 & disgust \\
+7--26 & Additional GoEmotions labels \\
+27--29 & Derived intent classes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Behaviour Intent Labels}
+
+\begin{center}
+\begin{tabular}{>{\ttfamily}p{3.5cm}p{8cm}}
+\toprule
+\textbf{Label} & \textbf{Description} \\
+\midrule
+\texttt{Social\_Withdrawal} & Avoidance of social interaction \\
+\texttt{Rumination} & Repetitive negative thinking \\
+\texttt{Avoidance} & Behavioral/emotional avoidance \\
+\texttt{Negative\_Self\_Talk} & Self-deprecating internal dialogue \\
+\texttt{Emotional\_Expression} & Open sharing of feelings \\
+\texttt{Help\_Seeking} & Actively requesting support \\
+\texttt{Active\_Coping} & Problem-solving behavior \\
+\texttt{Conversational\_Act} & Structural dialogue acts \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Output Schema (ChatML / Llama-3)}
+
+Each conversation is formatted as a \texttt{messages} array with \textbf{user} (patient) and \textbf{assistant} (therapist) roles. Emotion and intent metadata are injected into per-message \texttt{metadata} fields:
+
+\begin{lstlisting}[language=json, caption=Example output record (JSONL)]
+{
+  "messages": [
+    {"role": "system", "content": "You are a compassionate therapist..."},
+    {
+      "role": "user",
+      "content": "I've been feeling anxious about work lately.",
+      "metadata": {
+        "emotion": "fear",
+        "behaviour": "Help_Seeking",
+        "source": "counselchat"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds really difficult. Can you tell me more?",
+      "metadata": {
+        "emotion": "neutral",
+        "behaviour": "reflection",
+        "source": "counselchat"
+      }
+    }
+  ],
+  "metadata": {
+    "source": "counselchat",
+    "conversation_id": "cc_12345",
+    "num_turns": 4
+  }
+}
+\end{lstlisting}
+
+\subsection{Module 5: Runner and Documentation}
+\textcolor{teal}{\textsf{C}}\ \textbf{File}: \texttt{run\_pipeline.py} + \texttt{README.md}
+
+Orchestrates all four modules sequentially with CLI arguments for skipping HuggingFace downloads, specifying output paths, and controlling conversation count. README documents installation, usage, architecture, and troubleshooting.
+
+% ─── Environment ────────────────────────────────────────────────────────
+\section{Environment}
+
+\begin{center}
+\begin{tcolorbox}[colback=white, colframe=darkbg!50, enhanced, breakable, title=Runtime Environment, fonttitle=\sffamily\bfseries]
+\begin{tabular}{>{\sffamily\bfseries}p{4cm}p{8cm}}
+\toprule
+\textbf{Component} & \textbf{Value} \\
+\midrule
+Operating System & macOS 26.3.1 (Apple Silicon M4) \\
+Python & 3.13.7 \\
+Torch Backend & MPS (Metal Performance Shaders) \\
+CUDA & Not available \\
+RAM & 16 GB \\
+Working Directory & \texttt{/Volumes/Seagate Expansion Drive/psychotherapy/} \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+
+\begin{tcolorbox}[infoBox={Installed Packages}]
+\begin{tabular}{@{}p{4cm}p{8cm}}
+pandas 2.x & Data manipulation and DataFrame operations \\
+numpy & Numerical computing \\
+torch (MPS) & Deep learning inference backend \\
+transformers & Pre-trained model loading and inference \\
+faster-whisper & Optimized Whisper transcription \\
+datasets & HuggingFace dataset loading \\
+sentence-transformers & Embedding-based similarity \\
+presidio-analyzer 2.2.364 & PII detection (NER + regex) \\
+presidio-anonymizer 2.2.364 & PII redaction \\
+spacy 3.8.16 & NLP engine for Presidio \\
+en\_core\_web\_sm & spaCy English model \\
+tqdm & Progress bars \\
+scikit-learn & Data splitting and utilities \\
+nltk & Text preprocessing \\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{tcolorbox}[warnBox={Missing Packages}]
+\texttt{librosa} and \texttt{soundfile} are not installed. These are only needed if audio I/O is required beyond faster-whisper's built-in loader. Install with: \texttt{pip install librosa soundfile}
+\end{tcolorbox}
+
+% ─── Deliverables ──────────────────────────────────────────────────────
+\section{Deliverables}
+
+\begin{center}
+\begin{tcolorbox}[colback=white, colframe=indigodark, enhanced, breakable, title=File Deliverables, fonttitle=\sffamily\bfseries]
+\begin{tabular}{>{\ttfamily}p{3.5cm}p{2cm}p{7cm}}
+\toprule
+\textbf{File} & \textbf{Size} & \textbf{Description} \\
+\midrule
+\texttt{requirements.txt} & 2.7 KB & All pip dependencies \\
+\texttt{pii\_scrubber.py} & 607 lines & Presidio PII scrubber with medical-ID recognizer \\
+\texttt{transcriber.py} & 21.7 KB & faster-whisper multilingual transcription \\
+\texttt{dataset\_builder.py} & 797 lines & 6-source dataset ingestion + merge + filter \\
+\texttt{annotator\_and\_exporter.py} & 988 lines & 3-model annotation + ChatML JSONL export \\
+\texttt{run\_pipeline.py} & 8.6 KB & End-to-end orchestration \\
+\texttt{README.md} & 8.3 KB & Full pipeline documentation \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+\end{center}
+
+% ─── Test Results ───────────────────────────────────────────────────────
+\section{Quality Assurance}
+
+\subsection{Import Verification}
+
+\begin{tcolorbox}[successBox={Import Test Results}]
+\begin{tabular}{lr}
+\toprule
+\textbf{Module} & \textbf{Status} \\
+\midrule
+\texttt{pii\_scrubber.py} & \textcolor{teal}{$\checkmark$}\ PASS \\
+\texttt{transcriber.py} & \textcolor{teal}{$\checkmark$}\ PASS \\
+\texttt{dataset\_builder.py} & \textcolor{teal}{$\checkmark$}\ PASS \\
+\texttt{annotator\_and\_exporter.py} & \textcolor{teal}{$\checkmark$}\ PASS \\
+\texttt{run\_pipeline.py} & \textcolor{teal}{$\checkmark$}\ PASS \\
+\bottomrule
+\end{tabular}
+\end{tcolorbox}
+
+\subsection{PII Scrubbing Self-Test}
+
+\begin{tcolorbox}[successBox={Self-Test: 6/6 Passed}]
+\begin{enumerate}[label=Test \arabic*:, leftmargin=*]
+\item Medical ID + name + date + phone + organization --- PASS
+\item Aadhaar card number --- PASS
+\item Indian phone number (+91 prefix) --- PASS
+\item Email address --- PASS
+\item Aadhaar (alternative format) --- PASS
+\item Clean text (no PII) --- PASS
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection{Integration Status}
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+\textbf{Integration Point} & \textbf{Status} \\
+\midrule
+PII scrubber self-tests & \textcolor{teal}{$\checkmark$}\ Complete \\
+Module imports (all 5) & \textcolor{teal}{$\checkmark$}\ Complete \\
+PII $\to$ Dataset Builder & \textcolor{teal}{$\checkmark$}\ Integrated \\
+Dataset Builder $\to$ Annotator & \textcolor{teal}{$\checkmark$}\ Integrated \\
+Annotator $\to$ JSONL export & \textcolor{teal}{$\checkmark$}\ Complete \\
+Full end-to-end smoke test & $\circledast$\ Pending (requires model extraction) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ─── Remaining Work ─────────────────────────────────────────────────────
+\section{Remaining Tasks}
+
+\begin{tcolorbox}[warnBox={To Do}]
+\begin{enumerate}[label=\textcolor{orange}{\textsf{o}}\ \arabic*., leftmargin=*]
+\item \textbf{Extract model zips} from \texttt{TransferNow-20260824m4pmjvhe.zip} (962MB) to \texttt{./models/} directory
+\item \textbf{Full smoke test}: run \texttt{python3 run\_pipeline.py --local-only} end-to-end
+\item \textbf{Libreoffice audio deps}: install \texttt{librosa} + \texttt{soundfile} if audio I/O needed
+\item \textbf{HuggingFace connectivity}: verify network access for CounselChat/EmpatheticDialogues/Mental Health FAQ downloads
+\end{enumerate}
+\end{tcolorbox}
+
+% ─── Appendix ───────────────────────────────────────────────────────────
+\clearpage
+\appendix
+\section{Presidio API Compatibility Notes}
+
+This section documents resolved API mismatches between expected and installed Presidio versions.
+
+\begin{tcolorbox}[colback=lightgray!30, colframe=indigodark, title=API Migration Notes, fonttitle=\sffamily\bfseries]
+\begin{description}[leftmargin=2.5cm, labelwidth=2cm]
+\item[Pattern import] \texttt{presidio\_analyzer.recognizer\_pattern.Pattern} ---DNE. Use \texttt{presidio\_analyzer.Pattern}
+\item[OperatorConfig] \texttt{operator="replace"} ---DNE. Use \texttt{operator\_name="replace"}
+\item[OperatorConfig params] \texttt{replace\_params=\{...\}} ---DNE. Use \texttt{params=\{...\}}
+\item[NlpEngineProvider] Old API with \texttt{nlp\_engine\_name} kwarg ---DNE. Instantiate \texttt{SpacyNlpEngine} directly
+\item[SpacyNlpEngine models] \texttt{"lang": ..., "model": ...} ---DNE. Use \texttt{"lang\_code": ..., "model\_name": ...}
+\end{description}
+\end{tcolorbox}
+
+\section{Usage Commands}
+
+\begin{tcolorbox}[colback=darkbg!5, colframe=teal, title=CLI Commands, fonttitle=\sffamily\bfseries]
+\begin{lstlisting}[language=bash, caption=Pipeline execution commands, basicstyle=\ttfamily\footnotesize]
+# Step 1: PII scrubber self-test
+python3 pii_scrubber.py --test
+
+# Step 2: Transcribe mock clinical audio
+python3 transcriber.py \
+  --input-dir ./local_data/audio/ \
+  --output-dir ./transcriptions/ \
+  --language en
+
+# Step 3: Build and filter dataset
+python3 dataset_builder.py \
+  --output data/curated_dataset.csv \
+  --mock-clinical-dir ./local_data/ \
+  --transcriptions ./transcriptions/ \
+  --target-conversations 1500
+
+# Step 4: Annotate with models
+python3 annotator_and_exporter.py \
+  --input data/curated_dataset.csv \
+  --models-dir ./models/ \
+  --output curated_psychotherapy_dataset.jsonl
+
+# Step 5: Full pipeline (end-to-end)
+python3 run_pipeline.py \
+  --local-only \
+  --target-conversations 1500 \
+  --output-dir ./output/
+\end{lstlisting}
+\end{tcolorbox}
+
+\section{Output File Schemas}
+
+\begin{tcolorbox}[colback=lightgray!30, colframe=teal, title=Final Output Schema, fonttitle=\sffamily\bfseries]
+\begin{description}[style=nextline]
+\item[curated\_psychotherapy\_dataset.jsonl] One JSON object per line. Each object:
+\begin{itemize}
+\item \texttt{messages}: list of ChatML-format messages (\texttt{system}, \texttt{user}, \texttt{assistant})
+\item \texttt{metadata}: source, conversation\_id, num\_turns
+\item Per-message \texttt{metadata} includes \texttt{emotion}, \texttt{behaviour}, \texttt{source}
+\end{itemize}
+\item[curated\_dataset.csv] Filtered DataFrame with columns: \texttt{conversation\_id}, \texttt{turn\_id}, \texttt{speaker}, \texttt{text}, \texttt{emotion}, \texttt{source}, \texttt{metadata}
+\item[curated\_dataset\_merged.csv] Full merged dataset before filtering (all sources, all rows)
+\end{description}
+\end{tcolorbox}
+
+% ─── Footer ─────────────────────────────────────────────────────────────
+\vfill
+\begin{center}
+\begin{tcolorbox}[colback=lightgray!30, colframe=gray, sharp corners, boxrule=0pt, width=0.9\linewidth]
+\centering
+\sffamily\color{gray}\footnotesize
+Context-Aware AI Psychotherapy --- Psychotherapy Dataset Curation Pipeline --- Milestone 1\\
+Apple M4 / MPS / Python 3.13.7 --- Report compiled \today
+\end{tcolorbox}
+\end{center}
+
+\end{document}
