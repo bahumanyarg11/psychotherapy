@@ -187,3 +187,19 @@ template, compatible with:
 Each line is a JSON object with:
 - `"messages"`: list of `{"role": "system"|"user"|"assistant", "content": str}`
 - `"metadata"`: source, language, turn count, per-utterance emotion/intent annotations
+
+## Presentation GUI
+
+The repository includes a lightweight, local Streamlit interface for presenting
+the conversational agent without downloading a large language model:
+
+```bash
+pip install streamlit
+streamlit run app.py
+```
+
+Open the local URL shown in the terminal, then use the suggested prompts or
+type your own message. The interface includes session-level affect/intent
+signals, a crisis safety response, a new-session control, and JSON export.
+This is a demonstration tool, not a licensed therapist or a replacement for
+professional mental-health care.
