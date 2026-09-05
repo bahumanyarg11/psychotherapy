@@ -20,28 +20,48 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600&display=swap');
-    :root { --ink:#17312b; --muted:#69807a; --mint:#dff3eb; --cream:#fbfaf7; --accent:#1d806b; }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+    :root { --ink:#132b27; --muted:#647873; --cream:#f5f7f5; --accent:#167a68; --line:#dfe8e3; }
     .stApp { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; }
-    [data-testid="stSidebar"] { background:#17312b; }
-    [data-testid="stSidebar"] * { color:#edf8f3 !important; }
-    .hero { padding:1.7rem 0 1rem; }
-    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.72rem; }
-    h1, h2, h3 { font-family:'Playfair Display',serif !important; color:var(--ink) !important; }
-    .hero h1 { font-size:3.1rem; line-height:1.05; margin:.3rem 0 .7rem; }
-    .hero p { color:var(--muted); font-size:1.05rem; max-width:670px; }
-    .status { display:inline-flex; align-items:center; gap:.45rem; background:#e8f6ed; color:#246b4e;
-      border-radius:999px; padding:.38rem .75rem; font-size:.8rem; font-weight:600; }
-    .dot { width:8px; height:8px; border-radius:50%; background:#38a169; display:inline-block; }
-    .welcome { background:linear-gradient(135deg,#e8f7f0,#f3f8ed); border:1px solid #cde9dd;
-      border-radius:20px; padding:1.1rem 1.25rem; margin-bottom:1rem; }
+    [data-testid="stHeader"] { background:rgba(245,247,245,.82); }
+    [data-testid="stSidebar"] { background:linear-gradient(180deg,#102f2a 0%,#18463c 100%); border-right:0; }
+    [data-testid="stSidebar"] * { color:#effaf5 !important; }
+    [data-testid="stSidebar"] .stCaption { color:#a6c6ba !important; }
+    [data-testid="stSidebar"] hr { border-color:rgba(255,255,255,.13); }
+    [data-testid="stSidebar"] button { border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.08); }
+    [data-testid="stSidebar"] button:hover { border-color:#8de1c2; background:rgba(141,225,194,.16); }
+    [data-testid="stSidebar"] [data-testid="stMetric"] { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.1);
+      border-radius:14px; padding:.65rem .7rem; }
+    [data-testid="stSidebar"] [data-testid="stMetricLabel"] { color:#a6c6ba !important; font-size:.68rem; }
+    [data-testid="stSidebar"] [data-testid="stMetricValue"] { color:#f4fffa !important; font-size:1rem; }
+    .brand { display:flex; align-items:center; gap:.65rem; margin:.15rem 0 1.5rem; }
+    .brand-mark { display:grid; place-items:center; width:34px; height:34px; border-radius:11px;
+      background:#8de1c2; color:#10392f !important; font-weight:700; font-size:1.1rem; }
+    .brand-name { font-size:1.35rem; font-weight:700; letter-spacing:-.04em; }
+    .hero { padding:2.2rem 0 1.25rem; }
+    .eyebrow { color:var(--accent); font-weight:700; letter-spacing:.15em; text-transform:uppercase; font-size:.68rem; }
+    h1, h2, h3 { font-family:'Playfair Display',serif !important; color:var(--ink) !important; letter-spacing:-.02em; }
+    .hero h1 { font-size:3.35rem; line-height:1.04; margin:.45rem 0 .75rem; }
+    .hero p { color:var(--muted); font-size:1.05rem; line-height:1.6; max-width:660px; }
+    .status { display:inline-flex; align-items:center; gap:.45rem; background:#e3f6ed; color:#216b55;
+      border:1px solid #c9e9db; border-radius:999px; padding:.42rem .8rem; font-size:.76rem; font-weight:700; }
+    .dot { width:8px; height:8px; border-radius:50%; background:#25a875; display:inline-block; box-shadow:0 0 0 4px #c8efdf; }
+    .welcome { background:linear-gradient(135deg,#e3f6ed,#f0f8ee); border:1px solid #cce6d9;
+      border-radius:18px; padding:1.1rem 1.25rem; margin-bottom:1.2rem; color:#36594f; line-height:1.55; }
     .welcome strong { color:var(--ink); }
-    .metric { background:#fff; border:1px solid #e6ebe6; border-radius:14px; padding:.9rem 1rem; }
-    .metric-label { color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }
-    .metric-value { color:var(--ink); font-size:1.25rem; font-weight:700; margin-top:.2rem; }
-    .disclaimer { color:#b7cbc3; font-size:.76rem; line-height:1.5; margin-top:1.5rem; }
-    .stChatMessage { border-radius:16px; }
-    div[data-testid="stChatInput"] { padding-bottom:1rem; }
+    .metric { background:#fff; border:1px solid var(--line); border-radius:16px; padding:1rem 1.1rem; box-shadow:0 8px 24px rgba(20,55,45,.04); }
+    .metric-label { color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; }
+    .metric-value { color:var(--ink); font-size:1.3rem; font-weight:700; margin-top:.25rem; }
+    .disclaimer { color:#a9c7bb; font-size:.73rem; line-height:1.55; margin-top:1.4rem; }
+    [data-testid="stChatMessage"] { border:1px solid var(--line); border-radius:18px; padding:.9rem 1rem; margin:.7rem 0;
+      background:#fff; box-shadow:0 5px 18px rgba(20,55,45,.035); }
+    [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"],
+    [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] p,
+    [data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] li { color:#173a32 !important; font-size:.96rem; line-height:1.65; }
+    div[data-testid="stChatInput"] { padding:1rem 0 1.3rem; }
+    div[data-testid="stChatInput"] > div { border:1px solid #bfd8cc; border-radius:18px; background:#fff; box-shadow:0 8px 25px rgba(20,55,45,.08); }
+    div[data-testid="stChatInput"] textarea { color:#173a32 !important; }
+    .stInfo { border-radius:14px; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -85,7 +105,10 @@ def submit_message(text: str) -> None:
 
 
 with st.sidebar:
-    st.markdown("## Mend")
+    st.markdown(
+        '<div class="brand"><div class="brand-mark">✦</div><div class="brand-name">Mend</div></div>',
+        unsafe_allow_html=True,
+    )
     st.caption("Reflective support, grounded in empathy")
     st.markdown("---")
     st.markdown("### Session signals")
