@@ -67,6 +67,8 @@ if "messages" not in st.session_state:
     ]
 if "last_meta" not in st.session_state:
     st.session_state.last_meta = {"emotion": "neutral", "behaviour": "Conversational_Act"}
+if "last_response" not in st.session_state:
+    st.session_state.last_response = st.session_state.messages[0]["content"]
 
 
 def submit_message(text: str) -> None:
@@ -79,6 +81,7 @@ def submit_message(text: str) -> None:
         {"role": "assistant", "content": response, "crisis": meta["crisis_flag"] == "true"}
     )
     st.session_state.last_meta = meta
+    st.session_state.last_response = response
 
 
 with st.sidebar:
@@ -110,6 +113,7 @@ with st.sidebar:
             {"role": "assistant", "content": "Welcome back. What feels most important to talk about today?"}
         ]
         st.session_state.last_meta = {"emotion": "neutral", "behaviour": "Conversational_Act"}
+        st.session_state.last_response = st.session_state.messages[0]["content"]
         st.rerun()
     export = st.session_state.bot.export_chat_session()
     st.download_button(
@@ -167,6 +171,11 @@ with right:
                 f'<div class="metric-value">{max(0, (len(st.session_state.messages) - 1) // 2)}</div></div>',
                 unsafe_allow_html=True)
     st.markdown("")
+    st.markdown("### Latest AI reflection")
+    st.markdown(
+        f'<div class="welcome"><strong>Mend says</strong><br><br>{st.session_state.last_response}</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown("#### Safety first")
     st.info(
         "Crisis language activates an urgent safety response with crisis resources. "
