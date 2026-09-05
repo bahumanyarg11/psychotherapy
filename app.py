@@ -145,7 +145,8 @@ with left:
         unsafe_allow_html=True,
     )
     for message in st.session_state.messages:
-        with st.chat_message(message["role"], avatar="M" if message["role"] == "assistant" else "Y"):
+        avatar = "🟢" if message["role"] == "assistant" else "🙂"
+        with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
             if message.get("crisis"):
                 st.warning("If you are in immediate danger, call your local emergency number or go to the nearest emergency department.")
